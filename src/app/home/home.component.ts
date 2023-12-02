@@ -1,9 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {Course, sortCoursesBySeqNo} from '../model/course';
+import { Course, CourseCategory, sortCoursesBySeqNo } from '../model/course';
 import {HttpClient} from '@angular/common/http';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import { CourseDialogComponent } from "../course-dialog/course-dialog.component";
 import { CoursesService } from "../services/courses.service";
+import { map } from "rxjs/operators";
+import { Observable } from "rxjs";
 
 
 
@@ -30,15 +32,9 @@ export class HomeComponent implements OnInit {
   }
   */
 
-  /******************************/
-  /******************************/
-  /* OLD IMPERATIVE STYLE - END */
-  /******************************/
-  /******************************/
+  /*ngOnInit() {
 
-  ngOnInit() {
-
-    /*this.http.get('/api/courses')
+    this.http.get('/api/courses')
       .subscribe(
         res => {
 
@@ -48,9 +44,17 @@ export class HomeComponent implements OnInit {
 
           this.advancedCourses = courses.filter(course => course.category == "ADVANCED");
 
-        });*/
+        });
 
-  }
+  }*/
+
+  /******************************/
+  /******************************/
+  /* OLD IMPERATIVE STYLE - END */
+  /******************************/
+  /******************************/
+
+
 
   editCourse(course: Course) {
 
@@ -72,10 +76,38 @@ export class HomeComponent implements OnInit {
   /* REACTIVE STYLE - START */
   /**************************/
   /**************************/
+
+  beginnerCourses$: Observable<Course[]>;
+
+  advancedCourses$: Observable<Course[]>;
+
   constructor(
     private coursesService: CoursesService,
     private dialog: MatDialog
   ) {}
+
+  ngOnInit() {
+
+    const courses$ = this.coursesService.loadAllCourses()
+      .pipe(
+        map(courses => courses.sort(sortCoursesBySeqNo))
+      )
+
+    this.beginnerCourses$ = courses$.pipe(
+      map(courses => courses.filter( course => course.category === CourseCategory.BEGINNER))
+    )
+
+    this.advancedCourses$ = courses$.pipe(
+      map(courses => courses.filter( course => course.category === CourseCategory.ADVANCED))
+    )
+
+
+  }
+  /******************************/
+  /******************************/
+  /* OLD IMPERATIVE STYLE - END */
+  /******************************/
+  /******************************/
 
 }
 
