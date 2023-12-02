@@ -1,8 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import { Course, CourseCategory, sortCoursesBySeqNo } from '../model/course';
-import {HttpClient} from '@angular/common/http';
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import { CourseDialogComponent } from "../course-dialog/course-dialog.component";
 import { CoursesService } from "../services/courses.service";
 import { map } from "rxjs/operators";
 import { Observable } from "rxjs";
@@ -56,19 +53,7 @@ export class HomeComponent implements OnInit {
 
 
 
-  editCourse(course: Course) {
 
-    const dialogConfig: MatDialogConfig<any> = new MatDialogConfig();
-
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = "400px";
-
-    dialogConfig.data = course;
-
-    const dialogRef = this.dialog.open(CourseDialogComponent, dialogConfig);
-
-  }
 
 
   /**************************/
@@ -82,8 +67,7 @@ export class HomeComponent implements OnInit {
   advancedCourses$: Observable<Course[]>;
 
   constructor(
-    private coursesService: CoursesService,
-    private dialog: MatDialog
+    private coursesService: CoursesService
   ) {}
 
   ngOnInit() {
