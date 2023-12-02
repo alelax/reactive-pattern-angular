@@ -5,6 +5,7 @@ import {FormBuilder, Validators, FormGroup} from "@angular/forms";
 import * as moment from 'moment';
 import {catchError} from 'rxjs/operators';
 import {throwError} from 'rxjs';
+import { CoursesService } from "../services/courses.service";
 
 @Component({
     selector: 'course-dialog',
@@ -13,38 +14,40 @@ import {throwError} from 'rxjs';
 })
 export class CourseDialogComponent implements AfterViewInit {
 
-    form: FormGroup;
+  form: FormGroup;
 
-    course:Course;
+  course: Course;
 
-    constructor(
-        private fb: FormBuilder,
-        private dialogRef: MatDialogRef<CourseDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) course:Course) {
+  constructor(
+    private fb: FormBuilder,
+    private dialogRef: MatDialogRef<CourseDialogComponent>,
+    private coursesService: CoursesService,
+    @Inject(MAT_DIALOG_DATA) course:Course) {
 
-        this.course = course;
+      this.course = course;
 
-        this.form = fb.group({
-            description: [course.description, Validators.required],
-            category: [course.category, Validators.required],
-            releasedAt: [moment(), Validators.required],
-            longDescription: [course.longDescription,Validators.required]
-        });
+      this.form = this.fb.group({
+        description: [course.description, Validators.required],
+        category: [course.category, Validators.required],
+        releasedAt: [moment(), Validators.required],
+        longDescription: [course.longDescription,Validators.required]
+      });
 
-    }
+  }
 
-    ngAfterViewInit() {
+  ngAfterViewInit() {}
 
-    }
+  save() {
+    const changes = this.form.value;
 
-    save() {
+    this.coursesService.saveCourse(this.course.id, changes)
+      .subscribe( value => this.dialogRef.close(value))
 
-      const changes = this.form.value;
 
-    }
+  }
 
-    close() {
-        this.dialogRef.close();
-    }
+  close() {
+    this.dialogRef.close();
+  }
 
 }

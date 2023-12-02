@@ -1,8 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import { Course, CourseCategory, sortCoursesBySeqNo } from '../model/course';
 import { CoursesService } from "../services/courses.service";
-import { map } from "rxjs/operators";
+import { filter, map, tap } from "rxjs/operators";
 import { Observable } from "rxjs";
+import { MatDialogConfig } from "@angular/material/dialog";
+import { CourseDialogComponent } from "../course-dialog/course-dialog.component";
 
 
 
@@ -45,6 +47,20 @@ export class HomeComponent implements OnInit {
 
   }*/
 
+  /*editCourse(course: Course) {
+
+    const dialogConfig: MatDialogConfig<any> = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = "400px";
+
+    dialogConfig.data = course;
+
+    const dialogRef = this.dialog.open(CourseDialogComponent, dialogConfig);
+
+  }*/
+
   /******************************/
   /******************************/
   /* OLD IMPERATIVE STYLE - END */
@@ -71,11 +87,14 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.reloadCourses();
+  }
 
+  reloadCourses() {
     const courses$ = this.coursesService.loadAllCourses()
-      .pipe(
-        map(courses => courses.sort(sortCoursesBySeqNo))
-      )
+    .pipe(
+      map(courses => courses.sort(sortCoursesBySeqNo))
+    )
 
     this.beginnerCourses$ = courses$.pipe(
       map(courses => courses.filter( course => course.category === CourseCategory.BEGINNER))
@@ -84,14 +103,14 @@ export class HomeComponent implements OnInit {
     this.advancedCourses$ = courses$.pipe(
       map(courses => courses.filter( course => course.category === CourseCategory.ADVANCED))
     )
-
-
   }
-  /******************************/
-  /******************************/
-  /* OLD IMPERATIVE STYLE - END */
-  /******************************/
-  /******************************/
+
+  /************************/
+  /************************/
+  /* REACTIVE STYLE - END */
+  /************************/
+  /************************/
+
 
 }
 
