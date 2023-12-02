@@ -1,12 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import { Course, CourseCategory, sortCoursesBySeqNo } from '../model/course';
 import { CoursesService } from "../services/courses.service";
-import { filter, map, tap } from "rxjs/operators";
+import { map } from "rxjs/operators";
 import { Observable } from "rxjs";
-import { MatDialogConfig } from "@angular/material/dialog";
-import { CourseDialogComponent } from "../course-dialog/course-dialog.component";
-
-
+import { LoadingService } from "../loading/loading.service";
 
 @Component({
   selector: 'home',
@@ -83,7 +80,8 @@ export class HomeComponent implements OnInit {
   advancedCourses$: Observable<Course[]>;
 
   constructor(
-    private coursesService: CoursesService
+    private coursesService: CoursesService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit() {
