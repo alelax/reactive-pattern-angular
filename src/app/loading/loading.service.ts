@@ -8,6 +8,10 @@ export class LoadingService {
   loadingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   loading$: Observable<boolean> = this.loadingSubject.asObservable();
 
+  constructor() {
+    console.log('loading service instance...')
+  }
+
   /*
   * The loading indicator is going to be shown or hidden in a way that is
   * completely linked to the life cycle of the returned observable.

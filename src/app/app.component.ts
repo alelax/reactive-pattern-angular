@@ -1,7 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LoadingService } from "./loading/loading.service";
-
-
 
 @Component({
   selector: 'app-root',
@@ -11,14 +9,9 @@ import { LoadingService } from "./loading/loading.service";
 })
 export class AppComponent implements  OnInit {
 
-    constructor(private loadingService: LoadingService) {
+  constructor() {}
 
-    }
-
-    ngOnInit() {
-
-
-    }
+  ngOnInit() {}
 
   logout() {
 
