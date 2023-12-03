@@ -10,10 +10,11 @@ import {tap} from 'rxjs/operators';
 })
 export class MessagesComponent implements OnInit {
 
+  showMessage: boolean = false
 
-  constructor() {
+  errors: string[] = []
 
-  }
+  constructor() {}
 
   ngOnInit() {
 
@@ -22,8 +23,7 @@ export class MessagesComponent implements OnInit {
 
 
   onClose() {
-
-
+    this.showMessage = false;
   }
 
 }
