@@ -31,14 +31,19 @@ export class CoursesCardListComponent {
 
     const dialogRef = this.dialog.open(CourseDialogComponent, dialogConfig);
 
-    dialogRef.afterClosed()
+    /************************************/
+    /* REACTIVE STYLE STATELESS - START */
+    /************************************/
+    /*dialogRef.afterClosed()
       .pipe(
         filter(value => !!value),
         tap(() => this.coursesChanged.emit())
       )
-      .subscribe()
+      .subscribe()*/
 
-
+    /**********************************/
+    /* REACTIVE STYLE STATELESS - END */
+    /**********************************/
   }
 
 }

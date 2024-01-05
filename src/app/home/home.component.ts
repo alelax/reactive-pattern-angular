@@ -1,10 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import { Course, CourseCategory, sortCoursesBySeqNo } from '../model/course';
-import { CoursesService } from "../services/courses.service";
-import { catchError, finalize, map } from "rxjs/operators";
-import { Observable, throwError } from "rxjs";
-import { LoadingService } from "../loading/loading.service";
-import { MessagesService } from "../messages/messages.service";
+import { Course, CourseCategory } from '../model/course';
+import { Observable } from "rxjs";
+import { CoursesStore } from "../services/courses.store";
 
 @Component({
   selector: 'home',
@@ -80,11 +77,7 @@ export class HomeComponent implements OnInit {
 
   advancedCourses$: Observable<Course[]>;
 
-  constructor(
-    private coursesService: CoursesService,
-    private loadingService: LoadingService,
-    private messagesService: MessagesService
-  ) {}
+  constructor(private coursesStore: CoursesStore) {}
 
   ngOnInit() {
     this.reloadCourses();
@@ -92,7 +85,11 @@ export class HomeComponent implements OnInit {
 
   reloadCourses() {
 
-    const courses$ = this.coursesService.loadAllCourses()
+    /************************************/
+    /* REACTIVE STYLE STATELESS - START */
+    /************************************/
+
+    /*const courses$ = this.coursesService.loadAllCourses()
       .pipe(
         map(courses => courses.sort(sortCoursesBySeqNo)),
         catchError( err => {
@@ -111,7 +108,16 @@ export class HomeComponent implements OnInit {
 
     this.advancedCourses$ = loadCourses$.pipe(
       map(courses => courses.filter( course => course.category === CourseCategory.ADVANCED))
-    )
+    )*/
+
+    /**********************************/
+    /* REACTIVE STYLE STATELESS - END */
+    /**********************************/
+
+    this.beginnerCourses$ = this.coursesStore.filterByCategory(CourseCategory.BEGINNER);
+
+    this.advancedCourses$ = this.coursesStore.filterByCategory(CourseCategory.ADVANCED);
+
   }
 
   /************************/
