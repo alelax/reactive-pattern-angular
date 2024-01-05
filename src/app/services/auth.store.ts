@@ -4,7 +4,9 @@ import { User } from "../model/user";
 import { map, shareReplay, tap } from "rxjs/operators";
 import { HttpClient } from "@angular/common/http";
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthStore {
 
   private userSubject: BehaviorSubject<User> = new BehaviorSubject<User>(null);
