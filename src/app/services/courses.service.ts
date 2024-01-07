@@ -12,9 +12,27 @@ export class CoursesService {
 
   constructor(private http: HttpClient) {}
 
+  loadCourseById(courseId: number): Observable<Course> {
+    return this.http.get<Course>(`/api/courses/${courseId}`).pipe(
+      shareReplay()
+    )
+  }
+
   loadAllCourses(): Observable<Course[]> {
     return this.http.get<Course[]>('/api/courses').pipe(
       map( res => res["payload"]),
+      shareReplay()
+    )
+  }
+
+  loadAllCourseLessons(courseId: number): Observable<Lesson[]> {
+    return this.http.get<Lesson[]>('/api/lessons', {
+      params: {
+        pageSize: "10000",
+        courseId: courseId.toString()
+      }
+    }).pipe(
+      map(res => res["payload"]),
       shareReplay()
     )
   }
@@ -29,7 +47,7 @@ export class CoursesService {
     return this.http.get<Lesson[]>('/api/lessons', {
       params: {
         filter: search,
-        pageSize: 100
+        pageSize: "100"
       }
     }).pipe(
       map(res => res["payload"]),
